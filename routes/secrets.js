@@ -8,17 +8,19 @@ var multer = require('multer');
 //INDEX - show all secret requests to admin
 router.get("/", function(req, res){
     // Get all secrets from DB
+    
     Secret.find({}, function(err, allSecrets){
        if(err){
            console.log(err);
        } else {
+
           res.render("secrets/index",{secrets:allSecrets});
        }
     });
 });
 
 //CREATE - add new secret to DB
- router.post('/',middleware.isLoggedIn,(req,res)=>{
+ router.post('/',/*middleware.isLoggedIn,*/(req,res)=>{
      var name = req.body.name;
       var image = req.body.image;
       var description = req.body.description;
@@ -26,12 +28,12 @@ router.get("/", function(req, res){
       var nominee = req.body.nominee
       var nomineeAadhaar = req.body.nomineeaadhaar
       var NomineeEmail = req.body.nomineeemail 
-      var author = {
-          id : req.user._id,
-          username : req.user.username 
-     }
+    //   var author = {
+    //       id : req.user._id,
+    //       username : req.user.username 
+    //  }
      
-      var newSecret = {name: name, image: image, description: description,yourAadhaar:yourAadhaar,nominee:nominee,nomineeAadhaar:nomineeAadhaar,NomineeEmail:NomineeEmail,author:author}
+      var newSecret = {name: name, image: image, description: description,yourAadhaar:yourAadhaar,nominee:nominee,nomineeAadhaar:nomineeAadhaar,NomineeEmail:NomineeEmail,/*author:author*/}
     //save data to db
     Secret.create(newSecret,(err,newlyCreatedSecret)=>{
         if(err) {
@@ -46,12 +48,12 @@ router.get("/", function(req, res){
 
 
 //NEW - show form to create new secret
-router.get("/new", middleware.isLoggedIn, function(req, res){
+router.get("/new", /*middleware.isLoggedIn*/ function(req, res){
    res.render("secrets/new"); 
 });
 
 // SHOW - shows more info about one secret
-router.get("/:id",middleware.isLoggedIn, function(req, res){
+router.get("/:id",/*middleware.isLoggedIn,*/ function(req, res){
     //find the secret with provided ID
     Secret.findById(req.params.id,function(err, foundSecret){
         if(err){
@@ -59,7 +61,7 @@ router.get("/:id",middleware.isLoggedIn, function(req, res){
         } else {
             console.log(foundSecret)
             //render show template with that secret
-            res.render("secrets/show", {secret: foundSecret});
+            res.json(foundSecret);
         }
     });
 });
@@ -78,7 +80,7 @@ router.put('/:id',middleware.checkSecretOwnership,(req,res)=>{
             res.redirect('/secrets')
         }
         else {
-            res.redirect('/secrets/'+req.params.id)
+            res.json(updatedSecret)
         }
     })
 }) 
@@ -97,7 +99,7 @@ router.delete('/:id',middleware.checkSecretOwnership,(req,res)=>{
 //INDEX - show all  requests to admin
 router.get("/", function(req, res){
     // Get all secrets from DB
-    Request.find({}, function(err, allRequests){
+    Request.findById({}, function(err, allRequests){
        if(err){
            console.log(err);
        } else {
@@ -107,7 +109,7 @@ router.get("/", function(req, res){
 });
 
 //CREATE - add new request to DB
- router.post('/',middleware.isLoggedIn,(req,res)=>{
+ router.post('/',/*middleware.isLoggedIn*/(req,res)=>{
      var yourAadhaar = req.body.youraadhaar;
       var yourEmail = req.body.youremail;
       var deceasedAdhaar = req.body.deceasedadhaar;

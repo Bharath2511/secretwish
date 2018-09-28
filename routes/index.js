@@ -38,17 +38,15 @@ router.post('/register',(req,res)=>{
  })
  
  //login 
- router.get('/login',(req,res)=>{
-     res.render('login')
- })
  
- router.post('/login',passport.authenticate('local',
- {
-     successRedirect:'/secrets',
-     failureRedirect:'/login'
- }),
+ router.get('/login',passport.authenticate('local'),
+//  {
+//      successRedirect:'/secrets',
+//      failureRedirect:'/login'
+//  }),
  (req,res)=>{
-     
+     res.json(req.user)
+     console.log("$$$$$$$$$$$$$$$$", req.user)
  })
  
  //logout
