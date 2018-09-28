@@ -9,11 +9,12 @@ var secretSchema = new mongoose.Schema({
     nomineeAadhaar : Number,
     nomineeEmail : String,
     author : {
+    id : {
      type : mongoose.Schema.Types.ObjectId,
      ref :'User'
-    }
-    
-
+    },
+    username : String
+}
 
 })
  
